@@ -24,25 +24,27 @@ app.use(express.json())
 
 const PORT: number = Number(process.env.PORT) || 3000 
 
-app.get('/developers')
-app.get('/developers/:id')
-app.get('/developers/:id/projects')
-app.post('/developers')
-app.post('/developers/:id/info')
-app.patch('/developers/:id')
-app.patch('/developers/:id/info')
-app.delete('/developers/:id')
+// developer Rotes
+app.get('/developers', listAllDevs) // ✅
+app.get('/developers/:id', validateDevId, listDev) // ✅
+app.get('/developers/:id/projects', validateDevId, listDevProjects) // --**
+app.post('/developers', checkPostValues, validateEmail, createDev) // ✅
+app.post('/developers/:id/info', validateDevId, checkPostInfoValues, validateEmail) // ✅
+app.patch('/developers/:id', validateDevId, checkPostValues, updateDev)
+app.patch('/developers/:id/info', validateDevId, checkPostInfoValues,)
+app.delete('/developers/:id', validateDevId,)
 
+// projects Rotes
 app.get('/projects')
-app.get('/projects/:id')
-app.post('/projects')
-app.post('/projects/:id/technologies')
-app.patch('/projects/:id')
-app.delete('/projects/:id')
-app.delete('/projects/:id/:name')
+app.get('/projects/:id', validateProjectId, )
+app.post('/projects', validateProjectValues, validateProjectName)
+app.post('/projects/:id/technologies', validateProjectId, validateProjectValues, validateProjectName)
+app.patch('/projects/:id', validateProjectId, validateProjectValues, validateProjectName)
+app.delete('/projects/:id', validateProjectId, )
+app.delete('/projects/:id/technologies/:name', validateProjectId, validateTechName)
 
 
 app.listen(PORT, async ():Promise<void> => {
     await databaseInit()
-    console.log("Server is Running!")
+    console.log(`Server is Running on port: ${PORT}!`)
 })
