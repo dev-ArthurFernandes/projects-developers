@@ -2,12 +2,11 @@ import "dotenv/config";
 import { Client } from "pg";
 
 const client: Client = new Client({
-    user: process.env.USER,
-    password: process.env.PASSWORD,
-    host: process.env.HOST,
-    database: process.env.DATABASE,
-    port:  Number(process.env.POST)
+    user: process.env.PGUSER,
+    password: process.env.PGPASSWORD,
+    host: process.env.PGHOST,
+    database: process.env.PGDATABASE,
+    port: Number(process.env.PGPORT)
 })
-
 
 export default client
