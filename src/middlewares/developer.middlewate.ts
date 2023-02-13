@@ -141,7 +141,7 @@ const validateEmail = async (req: Request, res: Response, next: NextFunction): P
     return next()
 }
 
-const checkUpdate = (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+const checkUpdate = (req: Request, res: Response, next: NextFunction): Response | void => {
 
     
     const keys: Array<string> = Object.keys(req.body)
@@ -155,9 +155,6 @@ const checkUpdate = (req: Request, res: Response, next: NextFunction): Promise<R
             })
         }
     })
-
-    Object.entries()
-    
 
     return next()
 }
