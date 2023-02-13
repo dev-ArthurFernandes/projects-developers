@@ -1,19 +1,17 @@
-CREATE DATABASE developers_database;
+CREATE DATABASE Developers_DataBase;
 
 CREATE TYPE 'OS' AS ENUM ('Windows', 'Linux', 'MaxOS');
 
 CREATE TABLE developer_info(
     'id' BIGSERIAL PRIMARY KEY,
     'developerSince' DATA NOT NULL,
-    'preferredOS' OS NOT NULL
+    'preferredOS' OS
 );
 
 CREATE TABLE developers(
     'id' BIGSERIAL PRIMARY KEY,
     'name' VARCHAR(50) NOT NULL,
-    'email' VARCHAR(50) NOT NULL,
-    'aditionalInfoId' FOREIGNKEY,
-    
+    'email' VARCHAR(50) NOT NULL
 );
 
 CREATE TABLE projects(
@@ -22,7 +20,7 @@ CREATE TABLE projects(
     'description' TEXT NOT NULL,
     'estimatedTime' VARCHAR(20) NOT NULL,
     'repository' VARCHAR(120) NOT NULL,
-    'starDate' DATA NOT NULL,
+    'starDate' DATA not null,
     'endDate' DATA
 );
 
@@ -71,4 +69,3 @@ VALUES('PostgreSQL');
 INSERT INTO 
     technologies('name')
 VALUES('MongoDB ');
-
