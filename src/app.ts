@@ -1,21 +1,26 @@
 import express, { Application, json } from "express";
 import { databaseInit } from "./database";
 import {
-    checkPostValues,
+    checkPostKeys,
     validateDevId,
     validateProjectId,
-    checkPostInfoValues,
+    checkPostInfoKeys,
     validateProjectValues,
     validateTechName,
     validateEmail,
-    validateProjectName
+    validateProjectName,
+    checkUpdate,
+    checkValues,
 } from "./middlewares"
 import {
     listAllDevs,
     listDev,
     createDev,
     listDevProjects,
-    updateDev
+    updateDev,
+    setDevInfo,
+    updateDevInfo,
+    deleteDev
 } from './logic'
 
 const app: Application = express();
@@ -28,11 +33,11 @@ const PORT: number = Number(process.env.PORT) || 3000
 app.get('/developers', listAllDevs) // ✅
 app.get('/developers/:id', validateDevId, listDev) // ✅
 app.get('/developers/:id/projects', validateDevId, listDevProjects) // --**
-app.post('/developers', checkPostValues, validateEmail, createDev) // ✅
-app.post('/developers/:id/info', validateDevId, checkPostInfoValues, validateEmail) // ✅
-app.patch('/developers/:id', validateDevId, checkPostValues, updateDev)
-app.patch('/developers/:id/info', validateDevId, checkPostInfoValues,)
-app.delete('/developers/:id', validateDevId,)
+app.post('/developers', checkPostKeys, checkValues,validateEmail, createDev) // ✅
+app.post('/developers/:id/info', validateDevId, checkPostInfoKeys, checkValues, setDevInfo) // ✅
+app.patch('/developers/:id', validateDevId, checkValues, checkUpdate, updateDev) // ✅
+app.patch('/developers/:id/info', validateDevId, checkPostInfoKeys, checkValues, updateDevInfo) // ✅
+app.delete('/developers/:id', validateDevId, deleteDev) // ✅/❌ (Tem que deletar a informação adicional do devsenvolvedor)
 
 // projects Rotes
 app.get('/projects')

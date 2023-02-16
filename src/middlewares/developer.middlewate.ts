@@ -32,7 +32,7 @@ const validateDevId = async (req: Request, res: Response, next: NextFunction): P
     return next()
 }
 
-const checkPostValues = (req: Request, res: Response, next: NextFunction): Response | void => {
+const checkPostKeys = (req: Request, res: Response, next: NextFunction): Response | void => {
 
     const keys: Array<string> = Object.keys(req.body)
 
@@ -72,41 +72,43 @@ const checkPostValues = (req: Request, res: Response, next: NextFunction): Respo
     return next()
 }
 
-const checkPostInfoValues = (req: Request, res: Response, next: NextFunction): Response | void => {
+const checkPostInfoKeys = (req: Request, res: Response, next: NextFunction): Response | void => {
 
-    const keys: Array<string> = Object.keys(req.body)
+    const requestBoydArray = Object.entries(req.body)
 
-    const developerSince: string = req.body.developerSince
-    const preferredOS: string = req.body.preferredOS
-    
-    const requiredPostInfoKeys: Array<requiredPostInfoKeys> = ["developerSince", "preferredOS"]
+    let newRequestBodyArray: Array<any> = []
 
-    requiredPostInfoKeys.map((key: string) => {
-        if(!keys.includes(key)){
+    requestBoydArray.map((item) => {
+        if(item[0] === 'preferredOS' || item[0] === 'developerSince'){
+            newRequestBodyArray.push(item)
+        }
+    })
+
+    if(newRequestBodyArray.length === 0){
+        return res.status(400).json({
+            message: "you must pass a/any valid value: preferredOS or developerSince"
+        })
+    }
+
+    req.body = Object.fromEntries(newRequestBodyArray)
+
+    console.log(req.body)
+
+    return next()
+}
+
+const checkValues = (req: Request, res: Response, next: NextFunction): Response | void => {
+
+    const values: Array<string> = Object.values(req.body)
+
+    values.map((value: string) => {
+        if(typeof(value) === "number"){
             return res.status(400).json({
-                message: `Missing required key: ${key}`
+                message: "The values passed must be just 'strings'"
             })
         }
     })
 
-    if(developerSince === "" || preferredOS === ""){
-        return res.status(400).json({
-            message: "You must pass valid values in the fields"
-        })
-    }
-
-    if(typeof(developerSince) === "number" || typeof(preferredOS) === "number"){
-        return res.status(400).json({
-            message: "All fields must be string"
-        })
-    }
-
-    const newBodyReq = {
-        developerSince: developerSince,
-        preferredOS: preferredOS
-    }
-
-    req.body = newBodyReq
 
     return next()
 }
@@ -141,24 +143,38 @@ const validateEmail = async (req: Request, res: Response, next: NextFunction): P
     return next()
 }
 
-const checkUpdate = (req: Request, res: Response, next: NextFunction): Response | void => {
+const checkUpdate = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
 
-    
-    const keys: Array<string> = Object.keys(req.body)
+    const requestBoydArray = Object.entries(req.body)
 
-    const requiredRequestKeys: Array<requiredPostRequestKeys> = ["name", "email"]
+    let newRequestBodyArray: Array<any> = []
 
-    requiredRequestKeys.map((key: any) => {
-        if(!keys.includes(key)){
-            return res.status(400).json({
-                message: `Missing required key: ${key}`
-            })
+    requestBoydArray.map((item) => {
+        if(item[0] === 'name' || item[0] === 'email'){
+            newRequestBodyArray.push(item)
         }
     })
+
+    if(newRequestBodyArray.length === 0){
+        return res.status(400).json({
+            message: "you must pass a/any valid value: name or email"
+        })
+    }
+
+    req.body = Object.fromEntries(newRequestBodyArray)
+
+    console.log(req.body)
 
     return next()
 }
 
 
-export { validateDevId, checkPostValues, checkPostInfoValues, validateEmail }
+export {
+    validateDevId,
+    checkPostKeys,
+    checkPostInfoKeys,
+    validateEmail,
+    checkUpdate,
+    checkValues,
+}
 

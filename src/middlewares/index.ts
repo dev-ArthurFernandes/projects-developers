@@ -1,8 +1,10 @@
 import {
     validateDevId,
-    checkPostValues,
-    checkPostInfoValues,
-    validateEmail
+    checkPostKeys,
+    checkPostInfoKeys,
+    validateEmail,
+    checkUpdate,
+    checkValues
 } from './developer.middlewate';
 
 import {
@@ -15,10 +17,12 @@ import {
 export {
     validateDevId,
     validateProjectId,
-    checkPostValues,
-    checkPostInfoValues,
+    checkPostKeys,
+    checkPostInfoKeys,
     validateProjectValues,
     validateTechName,
     validateEmail,
-    validateProjectName
+    validateProjectName,
+    checkUpdate,
+    checkValues,
 }

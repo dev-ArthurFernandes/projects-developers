@@ -3,7 +3,10 @@ import {
     listDev,
     createDev,
     listDevProjects,
-    updateDev
+    updateDev,
+    setDevInfo,
+    updateDevInfo,
+    deleteDev
 } from './developer.logic'
 
 export {
@@ -11,5 +14,8 @@ export {
     listDev,
     createDev,
     listDevProjects,
-    updateDev
+    updateDev,
+    setDevInfo,
+    updateDevInfo,
+    deleteDev
 }
