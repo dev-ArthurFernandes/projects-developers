@@ -40,7 +40,7 @@ app.patch('/developers/:id/info', validateDevId, checkPostInfoKeys, checkValues,
 app.delete('/developers/:id', validateDevId, deleteDev) // ✅/❌ (Tem que deletar a informação adicional do devsenvolvedor)
 
 // projects Rotes
-app.get('/projects')
+app.get('/projects') // 
 app.get('/projects/:id', validateProjectId, )
 app.post('/projects', validateProjectValues, validateProjectName)
 app.post('/projects/:id/technologies', validateProjectId, validateProjectValues, validateProjectName)

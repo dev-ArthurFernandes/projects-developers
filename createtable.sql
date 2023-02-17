@@ -25,7 +25,9 @@ CREATE TABLE projects(
     "estimatedTime" VARCHAR(20) NOT NULL,
     "repository" VARCHAR(120) NOT NULL,
     "starDate" DATE NOT NULL,
-    "endDate" DATE
+    "endDate" DATE,
+    "developerId" INTEGER,
+    FOREIGN KEY ("developerId") REFERENCES "developers" ("id") ON DELETE SET NULL
 );
 
 CREATE TABLE technologies(
