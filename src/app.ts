@@ -20,7 +20,10 @@ import {
     updateDev,
     setDevInfo,
     updateDevInfo,
-    deleteDev
+    deleteDev,
+    listAllProjects,
+    listProject,
+    createProject
 } from './logic'
 
 const app: Application = express();
@@ -40,9 +43,9 @@ app.patch('/developers/:id/info', validateDevId, checkPostInfoKeys, checkValues,
 app.delete('/developers/:id', validateDevId, deleteDev) // ✅/❌ (Tem que deletar a informação adicional do devsenvolvedor)
 
 // projects Rotes
-app.get('/projects') // 
-app.get('/projects/:id', validateProjectId, )
-app.post('/projects', validateProjectValues, validateProjectName)
+app.get('/projects', listAllProjects) // ✅
+app.get('/projects/:id', validateProjectId, listProject) // ✅
+app.post('/projects', validateProjectValues, validateProjectName, createProject)
 app.post('/projects/:id/technologies', validateProjectId, validateProjectValues, validateProjectName)
 app.patch('/projects/:id', validateProjectId, validateProjectValues, validateProjectName)
 app.delete('/projects/:id', validateProjectId, )

@@ -24,7 +24,7 @@ CREATE TABLE projects(
     "description" TEXT NOT NULL,
     "estimatedTime" VARCHAR(20) NOT NULL,
     "repository" VARCHAR(120) NOT NULL,
-    "starDate" DATE NOT NULL,
+    "startDate" DATE NOT NULL,
     "endDate" DATE,
     "developerId" INTEGER,
     FOREIGN KEY ("developerId") REFERENCES "developers" ("id") ON DELETE SET NULL
