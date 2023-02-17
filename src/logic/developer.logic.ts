@@ -1,7 +1,7 @@
-import { NextFunction, query, Request, Response } from "express"
-import { Query, QueryConfig, QueryResult } from "pg"
-import format from "pg-format"
-import { client } from '../database'
+import { NextFunction, query, Request, Response } from "express";
+import { Query, QueryConfig, QueryResult } from "pg";
+import format from "pg-format";
+import { client } from "../database";
 
 const createDev = async (req:Request, res: Response): Promise<Response> => {
 
