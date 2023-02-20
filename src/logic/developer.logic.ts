@@ -10,7 +10,6 @@ const createDev = async (req:Request, res: Response): Promise<Response> => {
         aditionalInfoId: null
     } 
 
-    console.log(request)
 
     const queryString: string = format(`
         INSERT INTO
@@ -213,8 +212,6 @@ const updateDevInfo = async (req: Request, res: Response): Promise<Response | vo
     let queryResult = await client.query(queryConfig)
 
     const infoId = queryResult.rows[0].aditionalInfoId
-
-    console.log(infoId)
 
     queryString = format(`
         UPDATE

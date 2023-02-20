@@ -1,7 +1,7 @@
-import {Request, Response, NextFunction, query} from "express";
-import { Query, QueryConfig, QueryResult } from "pg";
+import {Request, Response, NextFunction} from "express";
+import { QueryConfig, QueryResult } from "pg";
 import { client } from "../database";
-import { requiredProjectsKeys } from '../@types';
+import { requiredProdTechKeys, requiredProjectsKeys, requiredValues } from '../@types';
 
 const validateProjectId = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
 
@@ -34,38 +34,22 @@ const validateProjectId = async (req: Request, res: Response, next: NextFunction
 
 const validateProjectValues = (req: Request, res: Response, next: NextFunction): Response | void => {
 
-    const keys: Array<string> = Object.keys(req.body)
-    const values: Array<string> = Object.values(req.body)
-    
-    const requiredPostInfoKeys: Array<requiredProjectsKeys> = ["name", "description", "estimatedTime", "repository", "startDate", "endDate"]
+    const requestBoydArray = Object.entries(req.body)
 
-    requiredPostInfoKeys.map((key: string) => {
-        if(!keys.includes(key)){
-            return res.status(400).json({
-                message: `Missing required key: ${key}`
-            })
+    const requiredProjectsKeys: Array<any> = ["name", "description", "repository", "startDate", "estimatedTime"]
+
+    let newRequestBodyArray: Array<any> = []
+
+    requestBoydArray.map((item) => {
+
+        const key: string = item[0]
+
+        if(requiredProjectsKeys.includes(key)){
+            newRequestBodyArray.push(item)
         }
     })
 
-    values.map((value: string) => {
-        if(value === ""){
-            return res.status(400).json({
-                message: "You must pass valid values in the fields"
-            })
-        }
-    })
-
-
-    const newBodyReq = {
-        name: req.body.name,
-        description: req.body.description,
-        estimatedTime: req.body.estimatedTime,
-        repository: req.body.repository,
-        startDate: req.body.startDate,
-        endDate: req.body.endDate ? req.body.endDate : null
-    }
-
-    req.body = newBodyReq
+    req.body = Object.fromEntries(newRequestBodyArray)
 
     return next()
 }
@@ -95,7 +79,6 @@ const validateTechName = async (req: Request, res: Response, next: NextFunction)
             message: "Technology not found!"
         })
     }
-
 
     return next()
 }
@@ -130,4 +113,63 @@ const validateProjectName = async (req: Request, res: Response, next: NextFuncti
     return next()
 }
 
-export { validateProjectId, validateProjectValues, validateTechName, validateProjectName }
+const validateProdTechValues = (req: Request, res: Response, next: NextFunction): Response | void => {
+
+    const requestBoydArray = Object.keys(req.body)
+
+    const requiredProdTechKeys: Array<requiredProdTechKeys> = ["addedIn", "projectId", "technologyId"]
+
+    const validateRequest = requiredProdTechKeys.every((key) => {
+        return requestBoydArray.includes(key)
+    })
+
+    if(!validateRequest){
+        return res.status(400).json({
+            message: `These are required keys: ${requiredProdTechKeys}`
+        })
+    }
+
+    req.body = {
+        addedIn: req.body.addedIn,
+        projectId: req.body.projectId,
+        technologyId: req.body.technologyId
+    }
+
+    return next()
+}
+
+const validateProjectDevId = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
+
+    const id: number = parseInt(req.body.developerId)
+
+    const querySting: string = `
+        SELECT
+            *
+        FROM
+            developers;
+    `
+
+    const queryConfig: QueryConfig = {
+        text: querySting,
+        values: [id]
+    }
+
+    const queryResult: QueryResult = await client.query(queryConfig)
+
+    if(!queryResult.rowCount){
+        return res.status(404).json({
+            message: "Dev not found!"
+        })
+    }
+
+    return next()
+}
+
+export {
+    validateProjectId,
+    validateProjectValues,
+    validateTechName,
+    validateProjectName,
+    validateProdTechValues,
+    validateProjectDevId
+}

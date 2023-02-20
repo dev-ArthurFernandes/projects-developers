@@ -13,6 +13,10 @@ import {
     listAllProjects,
     listProject,
     createProject,
+    setProjectTechnology,
+    updateProject,
+    deleteProject,
+    deleteTech
 } from './project.logic'
 
 export {
@@ -27,5 +31,8 @@ export {
     listAllProjects,
     listProject,
     createProject,
-
+    setProjectTechnology,
+    updateProject,
+    deleteProject,
+    deleteTech
 }

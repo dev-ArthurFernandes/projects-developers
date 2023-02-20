@@ -4,14 +4,17 @@ import {
     checkPostInfoKeys,
     validateEmail,
     checkUpdate,
-    checkValues
+    checkValues,
+    checkOSValues
 } from './developer.middlewate';
 
 import {
     validateProjectId,
     validateProjectValues,
     validateTechName,
-    validateProjectName
+    validateProjectName,
+    validateProdTechValues,
+    validateProjectDevId
 } from './projects.middleware';
 
 export {
@@ -25,4 +28,7 @@ export {
     validateProjectName,
     checkUpdate,
     checkValues,
+    validateProdTechValues,
+    checkOSValues,
+    validateProjectDevId
 }

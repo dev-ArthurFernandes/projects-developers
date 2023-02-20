@@ -15,7 +15,7 @@ CREATE TABLE developers(
     "name" VARCHAR(50) NOT NULL,
     "email" VARCHAR(50) NOT NULL,
     "aditionalInfoId" INTEGER,
-    FOREIGN KEY ("aditionalInfoId") REFERENCES "developer_info" ("id") ON DELETE CASCADE
+    FOREIGN KEY ("aditionalInfoId") REFERENCES "developer_info" ("id") ON DELETE SET NULL
 );
 
 CREATE TABLE projects(
@@ -40,7 +40,7 @@ CREATE TABLE projects_technologies(
     "addedIn" DATE NOT NULL,
     "projectId" INTEGER UNIQUE,
     "technologyId" INTEGER,
-    FOREIGN KEY ("projectId") REFERENCES "projects" ("id") ON DELETE CASCADE,
+    FOREIGN KEY ("projectId") REFERENCES "projects" ("id") ON DELETE SET NULL,
     FOREIGN KEY ("technologyId") REFERENCES "technologies" ("id") ON DELETE SET NULL
 );
 

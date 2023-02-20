@@ -1,7 +1,7 @@
 import {Request, Response, NextFunction, text, response} from "express";
 import { Query, QueryConfig, QueryResult } from "pg";
 import { client } from '../database';
-import { requiredPostRequestKeys, requiredPostInfoKeys } from '../@types'
+import { requiredPostRequestKeys, requiredPostInfoKeys, requiredValues } from '../@types'
 
 const validateDevId = async (req: Request, res: Response, next: NextFunction): Promise<Response | void> => {
 
@@ -61,13 +61,10 @@ const checkPostKeys = (req: Request, res: Response, next: NextFunction): Respons
         })
     }
 
-    const newBodyReq = {
+    req.body = {
         name: name,
         email: email
-
     }
-
-    req.body = newBodyReq
 
     return next()
 }
@@ -91,8 +88,6 @@ const checkPostInfoKeys = (req: Request, res: Response, next: NextFunction): Res
     }
 
     req.body = Object.fromEntries(newRequestBodyArray)
-
-    console.log(req.body)
 
     return next()
 }
@@ -163,11 +158,22 @@ const checkUpdate = async (req: Request, res: Response, next: NextFunction): Pro
 
     req.body = Object.fromEntries(newRequestBodyArray)
 
-    console.log(req.body)
-
     return next()
 }
 
+const checkOSValues = (req: Request, res: Response, next: NextFunction): Response | void => {
+    
+    const requiredValues: Array<requiredValues> = ["Windows", "Linux", "MacOS"]
+
+    if(!requiredValues.includes(req.body.preferredOS)){
+        return res.status(400).json({
+            message: "Required 'OS' are: 'Windows', 'Linux' or 'MacOS'"
+        })
+    }
+
+    return next()
+
+}
 
 export {
     validateDevId,
@@ -176,5 +182,5 @@ export {
     validateEmail,
     checkUpdate,
     checkValues,
+    checkOSValues
 }
-
